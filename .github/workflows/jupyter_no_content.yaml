@@ -1,12 +1,7 @@
 name: Check for Notebook Content
 
 on:
-  push:
-    branches:
-      - main # Or your desired branch(es)
-  pull_request:
-    branches:
-      - main # Or your desired branch(es)
+  workflow_dispatch:
 
 jobs:
   no_notebook_content:

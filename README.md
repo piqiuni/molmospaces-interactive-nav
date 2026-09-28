@@ -1,3 +1,13 @@
+> **Interactive navigation simulator branch.** This branch of the
+> [MolmoSpaces fork](https://github.com/piqiuni/molmospaces-interactive-nav)
+> builds on [Allen Institute for AI's MolmoSpaces](https://github.com/allenai/molmospaces)
+> and adds interaction interfaces, a standalone InteractiveNav V3 evaluator,
+> and a frozen validation benchmark. The fork's `main` branch tracks upstream;
+> this branch contains the reviewed public simulator work. See the
+> [simulator documentation](docs/interactive_navigation_simulator_branch.md)
+> and [source provenance](PROVENANCE.md). The upstream license is retained in
+> [LICENSE](LICENSE).
+
 <div align="center">
   <h1>
   <img src="docs/images/MolmoSpacesLogo.png" alt="MolmoSpaces Logo" width="800" style="margin-left:'auto' margin-right:'auto' display:'block'"/></br>

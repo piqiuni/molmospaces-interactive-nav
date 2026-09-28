@@ -1,9 +1,10 @@
 # Interactive navigation simulator branch
 
-`interactive-nav/sim` is based on the current upstream `main` and contains
+`interactive-nav/sim` descends from MolmoSpaces commit
+`1320b266d2b47aaa81c5f7a419cb9d3474e6994d` and contains
 simulator-facing interaction support plus a self-contained InteractiveNav V3
 benchmark evaluator. It intentionally excludes the navigation/semantic decision
-implementation maintained in `codex/exp-setting`.
+implementation maintained separately.
 
 ## Interface policy
 
@@ -95,7 +96,7 @@ missing rows, and runtime-ineligible formal episodes produce a nonzero wrapper
 exit code; ordinary policy failures remain valid scored outcomes and do not fail
 the command. Top-down rendering is enabled by default and uses the frozen oracle
 stage endpoints plus the tracked core scene-map loader; it does not import the
-benchmark-generation or navigation-method scripts from `codex/exp-setting`.
+private benchmark-generation or navigation-method scripts.
 Rendering remains a best-effort reporting artifact and does not change scoring
 or the exit code. Custom benchmark audits may explicitly use
 `--allow-runtime-ineligible`.
@@ -103,31 +104,30 @@ or the exit code. Custom benchmark audits may explicitly use
 `scripted_oracle` is evaluator diagnostics only. It follows frozen waypoints and
 uses the canonical locked-force interaction executor; its scores are not an
 external-policy baseline. The evaluator retains optional protocol adapters for
-compatibility, but this branch does not ship or start the ROS navigation stack.
+compatibility, but this distribution does not ship or start the ROS navigation stack.
 
 ## Synchronization rule
 
 Changes flow in one direction:
 
 ```text
-origin/main -> interactive-nav/sim -> codex/exp-setting
+MolmoSpaces upstream -> fork main -> interactive-nav/sim -> private algorithm integration
 ```
 
-Merge or cherry-pick simulator commits from this branch into
-`codex/exp-setting`. Do not merge `codex/exp-setting` back into this branch;
-that would reintroduce the full navigation algorithm history. The root
-`.gitignore` continues to exclude `Interactive-Nav-SG-nav/` and defaults to
-excluding `scripts/InteractiveNav/*`, with an explicit allow-list only for this
-branch's evaluator, schema, frozen benchmark, and their simulator-side support
-files. Git ignore rules do not remove tracked files during a reverse merge, so
-directionality remains the actual isolation guarantee.
+Review simulator changes before applying them to the private integration.
+Keep the private algorithm implementation out of this public repository. The
+root `.gitignore` excludes `Interactive-Nav-SG-nav/` and defaults to excluding
+`scripts/InteractiveNav/*`, with an explicit allow-list for the evaluator,
+schema, frozen benchmark, and simulator support files. Git ignore rules do not
+remove already tracked files, so review every public commit and tag before
+pushing.
 
 `scripts/InteractiveNav/simulator_scope.txt` is the machine-readable shared
-surface. After synchronizing this branch into the complete branch, verify that
-its blobs are identical:
+surface. In an integration checkout with both refs available, verify that its
+blobs are identical by supplying the actual simulator and algorithm refs:
 
 ```bash
 python scripts/InteractiveNav/check_simulator_scope_parity.py \
-  --sim-ref interactive-nav/sim \
-  --full-ref codex/exp-setting
+  --sim-ref <PUBLIC_SIMULATOR_REF> \
+  --full-ref <PRIVATE_ALGORITHM_REF>
 ```
