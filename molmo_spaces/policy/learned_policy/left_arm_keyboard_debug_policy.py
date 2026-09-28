@@ -48,7 +48,6 @@ class LeftArmKeyboardDebugPolicy(BasePolicy):
 
         # 0.28303343, -0.02953514,  0.01789065, -0.6400702 ,  0.39170685,   -0.2636598 , -0.03980027
         self._initial_left_arm_qpos = np.array([0.28, 0.0, 0.0, -0.64, 0.39, -0.26, -0.04])
-        
 
         self._listener = keyboard.Listener(on_press=self._on_press)
         self._listener.start()
@@ -149,4 +148,3 @@ class LeftArmKeyboardDebugPolicy(BasePolicy):
         if hasattr(self, "_listener") and self._listener is not None:
             self._listener.stop()
             self._listener = None
-
